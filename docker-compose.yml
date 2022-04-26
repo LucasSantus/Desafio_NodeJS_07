@@ -1,0 +1,11 @@
+version: '3.5'
+services:
+    database:
+        container_name: students_database
+        image: postgres:13
+        environment:
+            POSTGRES_DB: school_db
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: root
+        ports:
+            - 5433:5432

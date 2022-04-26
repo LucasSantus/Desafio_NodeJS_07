@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Course" ALTER COLUMN "title" SET DATA TYPE TEXT;
+
+-- AlterTable
+ALTER TABLE "Student" ALTER COLUMN "note" SET DATA TYPE DOUBLE PRECISION;
