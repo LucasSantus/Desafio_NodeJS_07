@@ -39,11 +39,24 @@ app.use(express.json());
  * Server Activation
  */
 
-async function isUpdateStudent(){
+app.listen(PORT, async () => {
+	console.log(`Listening on port ${PORT}`);
+
+	let students_length = parseInt(readline.question('\nQuantidade de alunos: '))
+
+	for(let counter = 1; counter <= students_length; counter++){
+		console.log(`\nInserção do ${counter}º aluno`)
+		let name = readline.question('\nNome do aluno: ')
+		let age = parseInt(readline.question('Idade do aluno: '))
+		let note = parseFloat(readline.question('Nota do aluno: '))
+		let course = readline.question('Curso do aluno: ')
+
+		await createStudent(name, age, note, course);
+	}
 
 	await getAllStudent();
 
-	console.log("Deseja Editar um Aluno?")
+	console.log("\nDeseja Editar um Aluno?")
 	let is_edit = readline.question('[Y/n]')
 	
 	if(is_edit == "Y" || is_edit == "y"){
@@ -63,22 +76,4 @@ async function isUpdateStudent(){
 			console.log("Aluno não encontrado!")
 		}
 	}
-}
-
-app.listen(PORT, async () => {
-	console.log(`Listening on port ${PORT}`);
-
-	let students_length = parseInt(readline.question('\nQuantidade de alunos: '))
-
-	for(let counter = 1; counter <= students_length; counter++){
-		console.log(`\nInserção do ${counter}º aluno`)
-		let name = readline.question('\nNome do aluno: ')
-		let age = parseInt(readline.question('Idade do aluno: '))
-		let note = parseFloat(readline.question('Nota do aluno: '))
-		let course = readline.question('Curso do aluno: ')
-
-		await createStudent(name, age, note, course);
-	}
-
-	await isUpdateStudent();
 });
