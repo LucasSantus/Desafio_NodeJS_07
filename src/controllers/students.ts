@@ -16,15 +16,15 @@ export async function createStudent(name: string, age: number, note: number, tit
 }
 
 export async function getAllStudent(){
-    const course = await prisma.course.findMany()
-	await course.forEach(async item => {
+    const courses = await prisma.course.findMany()
+	for(let item of courses){
 		const student = await prisma.student.findUnique({
 			where:{
 				id: item.studentId || undefined
 			}
 		})
 		console.log(`\nID: ${student?.id}, Nome: ${student?.name}, Idade: ${student?.age}, Nota: ${student?.note}, Curso: ${item?.title}`)
-	})
+	}
 }
 
 export async function updateStudent(id: string, name: string){

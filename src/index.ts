@@ -75,5 +75,9 @@ app.listen(PORT, async () => {
 		else{
 			console.log("Aluno não encontrado!")
 		}
+
+		await getAllStudent();
 	}
+
+	console.log("\nprograma finalizado!")
 });
