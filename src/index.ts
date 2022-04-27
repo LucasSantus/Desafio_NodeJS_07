@@ -7,7 +7,7 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
-import { createStudent } from "./controllers/students";
+import { createStudent, getAllStudent, updateStudent } from "./controllers/students";
 
 const prisma = new PrismaClient()
 
@@ -39,18 +39,34 @@ app.use(express.json());
  * Server Activation
  */
 
-// Criar um menu de opções para exibição.
+async function isUpdateStudent(){
+
+	await getAllStudent();
+
+	console.log("Deseja Editar um Aluno?")
+	let is_edit = readline.question('[Y/n]')
+	
+	if(is_edit == "Y" || is_edit == "y"){
+		let id_student = readline.question('Insira o ID do aluno: ')
+
+		const student = await prisma.student.findUnique({
+			where:{
+				id: id_student || undefined
+			}
+		})
+
+		if(student){
+			let name = readline.question('\nNome do aluno: ')
+			updateStudent(id_student, name);
+		}
+		else{
+			console.log("Aluno não encontrado!")
+		}
+	}
+}
+
 app.listen(PORT, async () => {
 	console.log(`Listening on port ${PORT}`);
-
-	console.log(`Deseja registrar algum curso?`)
-
-	let register_course = readline.question('\n[Y/n]: ')
-	let title_course: string
-	
-	if(register_course.lowerCase() === "y"){
-		title_course = readline.question("\nInsira o título do curso: ")
-	}
 
 	let students_length = parseInt(readline.question('\nQuantidade de alunos: '))
 
@@ -59,9 +75,10 @@ app.listen(PORT, async () => {
 		let name = readline.question('\nNome do aluno: ')
 		let age = parseInt(readline.question('Idade do aluno: '))
 		let note = parseFloat(readline.question('Nota do aluno: '))
+		let course = readline.question('Curso do aluno: ')
 
-		await createStudent(name, age, note);
+		await createStudent(name, age, note, course);
 	}
 
-	console.log("\nprograma finalizado!")
+	await isUpdateStudent();
 });
